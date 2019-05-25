@@ -4,16 +4,14 @@ import img from './img/chahao.jpg'
 class TodoApp extends Component {
     constructor(props) {
       super(props);
-      // const items = [
-      //   {
-      //     text: "learn",
-      //     id: 1
-      //   },{
-      //     text: "react",
-      //     id: 2
-      //   }
-      // ]
-      this.state = {items: [],inputVal:''};
+      const items =[{
+        value:'gf',
+        complete:'incomplete'
+      },{
+        value:'wll',
+        complete:'incomplete'
+      }] ;
+      this.state = {items: items,inputVal:''};
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);     
     }
@@ -23,14 +21,17 @@ class TodoApp extends Component {
         <div key={this.state.items.length}>
           <h3>TODOLISTS</h3>
           <div className='lists'>
-            <ul key={this.state.items.length}>
+            <ul>
               {
                 this.state.items.map((items,index) => {
                   return(
                   
                     <div className='content' key={this.state.items.length}>
-                      <li>{items}<img src={img} alt="delete" className='del_pic'
-                      onClick={this.handleDelete.bind(this,index)} /></li>
+                      <li>{index}</li>
+                      <li style={{color:'black'}} className="li_value">{items.value}<img src={img} alt="delete" className='del_pic'
+                      onClick={this.handleDelete.bind(this,index)} />
+                      </li>
+                      <button onClick={this.handleDone.bind(this,index)} className='compl_btn'>{items.complete}</button>
                     </div>
                     
                   
@@ -67,8 +68,11 @@ class TodoApp extends Component {
       if (!this.state.inputVal.length) {
         return;
       }
+      var items = this.state.items;
+      items = items.concat([{value:this.state.inputVal,complete:"incomplete"}])
       this.setState({
-        items:[...this.state.items,this.state.inputVal],
+        items:items,
+        // items:[...this.state.items.value,this.state.inputVal],
         inputVal:''
       })
       }
@@ -80,8 +84,19 @@ class TodoApp extends Component {
            items:items
          });  
       }
-    }
 
+      handleDone(index){
+        var items = this.state.items;
+        console.log(index);
+        for(var i=0;i<items.length;i++){        
+          if(i===index){
+            items[i].complete = 'complete';
+            break;
+          }         
+        }
+        this.setState({items:items});
+      }
+    }
 
 
 
